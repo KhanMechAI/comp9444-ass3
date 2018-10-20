@@ -1,0 +1,42 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Neural_QTrain.py	../Neural_QTrain.py	1;"	kind:file	line:1
+gym	../Neural_QTrain.py	/^import gym$/;"	kind:namespace	line:1
+tf	../Neural_QTrain.py	/^import tensorflow as tf$/;"	kind:namespace	line:2
+np	../Neural_QTrain.py	/^import numpy as np$/;"	kind:namespace	line:3
+random	../Neural_QTrain.py	/^import random$/;"	kind:namespace	line:4
+ENV_NAME	../Neural_QTrain.py	/^ENV_NAME = 'CartPole-v0'$/;"	kind:variable	line:8
+EPISODE	../Neural_QTrain.py	/^EPISODE = 200000  # Episode limitation$/;"	kind:variable	line:9
+STEP	../Neural_QTrain.py	/^STEP = 200  # Step limitation in an episode$/;"	kind:variable	line:10
+TEST	../Neural_QTrain.py	/^TEST = 10  # The number of tests to run every TEST_FREQUENCY episodes$/;"	kind:variable	line:11
+TEST_FREQUENCY	../Neural_QTrain.py	/^TEST_FREQUENCY = 100  # Num episodes to run before visualizing test accuracy$/;"	kind:variable	line:12
+GAMMA	../Neural_QTrain.py	/^GAMMA =  # discount factor$/;"	kind:variable	line:15
+INITIAL_EPSILON	../Neural_QTrain.py	/^INITIAL_EPSILON =  # starting value of epsilon$/;"	kind:variable	line:16
+FINAL_EPSILON	../Neural_QTrain.py	/^FINAL_EPSILON =  # final value of epsilon$/;"	kind:variable	line:17
+EPSILON_DECAY_STEPS	../Neural_QTrain.py	/^EPSILON_DECAY_STEPS =  # decay period$/;"	kind:variable	line:18
+env	../Neural_QTrain.py	/^env = gym.make(ENV_NAME)$/;"	kind:variable	line:22
+epsilon	../Neural_QTrain.py	/^epsilon = INITIAL_EPSILON$/;"	kind:variable	line:23
+STATE_DIM	../Neural_QTrain.py	/^STATE_DIM = env.observation_space.shape[0]$/;"	kind:variable	line:24
+ACTION_DIM	../Neural_QTrain.py	/^ACTION_DIM = env.action_space.n$/;"	kind:variable	line:25
+state_in	../Neural_QTrain.py	/^state_in = tf.placeholder("float", [None, STATE_DIM])$/;"	kind:variable	line:29
+action_in	../Neural_QTrain.py	/^action_in = tf.placeholder("float", [None, ACTION_DIM])$/;"	kind:variable	line:30
+target_in	../Neural_QTrain.py	/^target_in = tf.placeholder("float", [None])$/;"	kind:variable	line:31
+q_values	../Neural_QTrain.py	/^q_values =$/;"	kind:variable	line:37
+q_action	../Neural_QTrain.py	/^q_action =$/;"	kind:variable	line:38
+loss	../Neural_QTrain.py	/^loss =$/;"	kind:variable	line:41
+optimizer	../Neural_QTrain.py	/^optimizer =$/;"	kind:variable	line:42
+session	../Neural_QTrain.py	/^session = tf.InteractiveSession()$/;"	kind:variable	line:45
+explore	../Neural_QTrain.py	/^def explore(state, epsilon):$/;"	kind:function	line:50
+state	../Neural_QTrain.py	/^    state = env.reset()$/;"	kind:variable	line:72
+action	../Neural_QTrain.py	/^        action = explore(state, epsilon)$/;"	kind:variable	line:79
+nextstate_q_values	../Neural_QTrain.py	/^        nextstate_q_values = q_values.eval(feed_dict={$/;"	kind:variable	line:82
+target	../Neural_QTrain.py	/^        target =$/;"	kind:variable	line:89
+state	../Neural_QTrain.py	/^        state = next_state$/;"	kind:variable	line:99
+total_reward	../Neural_QTrain.py	/^        total_reward = 0$/;"	kind:variable	line:106
+state	../Neural_QTrain.py	/^            state = env.reset()$/;"	kind:variable	line:108
+action	../Neural_QTrain.py	/^                action = np.argmax(q_values.eval(feed_dict={$/;"	kind:variable	line:111
+ave_reward	../Neural_QTrain.py	/^        ave_reward = total_reward \/ TEST$/;"	kind:variable	line:118
