@@ -12,10 +12,12 @@ TEST = 10  # The number of tests to run every TEST_FREQUENCY episodes
 TEST_FREQUENCY = 100  # Num episodes to run before visualizing test accuracy
 
 # TODO: HyperParameters
-GAMMA =  # discount factor
-INITIAL_EPSILON =  # starting value of epsilon
-FINAL_EPSILON =  # final value of epsilon
-EPSILON_DECAY_STEPS =  # decay period
+GAMMA =  .95# discount factor
+INITIAL_EPSILON = .1# starting value of epsilon
+FINAL_EPSILON = .01 # final value of epsilon
+EPSILON_DECAY_STEPS =  100# decay period
+HIDDEN_UNITS = 256
+HIDDEN_UNITS_2 = 64
 
 # Create environment
 # -- DO NOT MODIFY --
@@ -31,15 +33,17 @@ action_in = tf.placeholder("float", [None, ACTION_DIM])
 target_in = tf.placeholder("float", [None])
 
 # TODO: Define Network Graph
-
-
+q_values = tf.layers.dense(state_in, HIDDEN_UNITS, kernel_initializer=tf.random_uniform_initializer(0,.1), activation=tf.nn.softmax)
+q_values = tf.layers.dense(q_values, HIDDEN_UNITS_2, kernel_initializer=tf.random_uniform_initializer(0,.1), activation=tf.nn.softmax)
 # TODO: Network outputs
-q_values =
-q_action =
+# q_values = tf.layers.dense(q_values, ACTION_DIM)
+q_values = tf.layers.dense(q_values, ACTION_DIM, kernel_initializer=tf.random_uniform_initializer(0,.1), activation=tf.nn.softmax)
+q_action = np.max(q_values)
 
 # TODO: Loss/Optimizer Definition
-loss =
-optimizer =
+loss = tf.square(target_in - q_action)
+# loss = tf.reduce_sum(sqe, axis=1)
+optimizer = tf.train.AdamOptimizer(learning_rate=.001).minimize(loss)
 
 # Start session - Tensorflow housekeeping
 session = tf.InteractiveSession()
@@ -73,7 +77,7 @@ for episode in range(EPISODE):
 
     # Update epsilon once per episode
     epsilon -= epsilon / EPSILON_DECAY_STEPS
-
+    
     # Move through env according to e-greedy policy
     for step in range(STEP):
         action = explore(state, epsilon)
@@ -86,7 +90,8 @@ for episode in range(EPISODE):
         # TODO: Calculate the target q-value.
         # hint1: Bellman
         # hint2: consider if the episode has terminated
-        target =
+        # nextstate_q_action = np.argmax(nextstate_q_values)
+        target = reward + GAMMA*np.max(nextstate_q_values) 
 
         # Do one training step
         session.run([optimizer], feed_dict={
@@ -107,7 +112,7 @@ for episode in range(EPISODE):
         for i in range(TEST):
             state = env.reset()
             for j in range(STEP):
-                env.render()
+                # env.render()
                 action = np.argmax(q_values.eval(feed_dict={
                     state_in: [state]
                 }))
