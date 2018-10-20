@@ -12,10 +12,10 @@ TEST = 10  # The number of tests to run every TEST_FREQUENCY episodes
 TEST_FREQUENCY = 100  # Num episodes to run before visualizing test accuracy
 
 # TODO: HyperParameters
-GAMMA =  .1# discount factor
-INITIAL_EPSILON = .1# starting value of epsilon
+GAMMA =  .2# discount factor
+INITIAL_EPSILON = .05# starting value of epsilon
 FINAL_EPSILON = .001 # final value of epsilon
-EPSILON_DECAY_STEPS =  10# decay period
+EPSILON_DECAY_STEPS =  100000# decay period
 HIDDEN_UNITS = 20
 HIDDEN_UNITS_2 = 10
 
@@ -33,10 +33,34 @@ action_in = tf.placeholder("float", [None, ACTION_DIM])
 target_in = tf.placeholder("float", [None])
 
 # TODO: Define Network Graph
-# q_values = tf.layers.dense(state_in, STATE_DIM, kernel_initializer=tf.random_uniform_initializer(0,.01), activation=tf.nn.softmax)
-# q_values = tf.layers.dense(q_values, HIDDEN_UNITS_2, kernel_initializer=tf.random_uniform_initializer(0,.01), activation=tf.nn.softmax)
+
+class DeepQNN:
+    def __init__(self, state_size, action_size, learning_rate, name="DQN"):
+        self.state_size = state_size
+        self.action_size = action_size
+        self.learning_rate = learning_rate
+
+        with tf.variable_scope(name):
+            #Input place holder definitions
+            self.inputs = tf.placeholder("float", [None, *state_size], name="inputs")
+            self.actions = tf.placeholder("float", [None, * action_size], name="actions")
+            self.q_target = tf.placeholder("float", [None], name="q_target")
+
+            #Network architecture
+            self.layer1 = tf.layers.dense(
+                                        inputs=self.inputs,
+                                        units=100,
+                                        kernel_initializer=tf.initializers.random_iniform(),
+                                        name="layer1")
+            self.output = tf.layers.dense(
+                                        inputs=self.layer1,
+                                        units=self.action_size,
+                                        kernel_initializer=tf.initializers.random_iniform(),
+                                        name="output")
+
+            self.Q_estimate = tf.reduce
+
 # TODO: Network outputs
-# q_values = tf.layers.dense(q_values, ACTION_DIM)
 q_values = tf.layers.dense(state_in, ACTION_DIM, kernel_initializer=tf.random_uniform_initializer(0,.01), activation=tf.nn.softmax)
 q_action = np.max(q_values)
 
@@ -81,7 +105,7 @@ for episode in range(EPISODE):
     # Move through env according to e-greedy policy
     for step in range(STEP):
         action = explore(state, epsilon)
-        next_state, reward, done, _ = env.step(np.argmax(action))
+        (next_state, reward, done, _) = env.step(np.argmax(action))
 
         nextstate_q_values = q_values.eval(feed_dict={
             state_in: [next_state]
