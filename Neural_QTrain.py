@@ -12,12 +12,12 @@ TEST = 10  # The number of tests to run every TEST_FREQUENCY episodes
 TEST_FREQUENCY = 100  # Num episodes to run before visualizing test accuracy
 
 # TODO: HyperParameters
-GAMMA =  .95# discount factor
+GAMMA =  .1# discount factor
 INITIAL_EPSILON = .1# starting value of epsilon
-FINAL_EPSILON = .01 # final value of epsilon
-EPSILON_DECAY_STEPS =  100# decay period
-HIDDEN_UNITS = 256
-HIDDEN_UNITS_2 = 64
+FINAL_EPSILON = .001 # final value of epsilon
+EPSILON_DECAY_STEPS =  10# decay period
+HIDDEN_UNITS = 20
+HIDDEN_UNITS_2 = 10
 
 # Create environment
 # -- DO NOT MODIFY --
@@ -33,17 +33,17 @@ action_in = tf.placeholder("float", [None, ACTION_DIM])
 target_in = tf.placeholder("float", [None])
 
 # TODO: Define Network Graph
-q_values = tf.layers.dense(state_in, HIDDEN_UNITS, kernel_initializer=tf.random_uniform_initializer(0,.1), activation=tf.nn.softmax)
-q_values = tf.layers.dense(q_values, HIDDEN_UNITS_2, kernel_initializer=tf.random_uniform_initializer(0,.1), activation=tf.nn.softmax)
+# q_values = tf.layers.dense(state_in, STATE_DIM, kernel_initializer=tf.random_uniform_initializer(0,.01), activation=tf.nn.softmax)
+# q_values = tf.layers.dense(q_values, HIDDEN_UNITS_2, kernel_initializer=tf.random_uniform_initializer(0,.01), activation=tf.nn.softmax)
 # TODO: Network outputs
 # q_values = tf.layers.dense(q_values, ACTION_DIM)
-q_values = tf.layers.dense(q_values, ACTION_DIM, kernel_initializer=tf.random_uniform_initializer(0,.1), activation=tf.nn.softmax)
+q_values = tf.layers.dense(state_in, ACTION_DIM, kernel_initializer=tf.random_uniform_initializer(0,.01), activation=tf.nn.softmax)
 q_action = np.max(q_values)
 
 # TODO: Loss/Optimizer Definition
 loss = tf.square(target_in - q_action)
 # loss = tf.reduce_sum(sqe, axis=1)
-optimizer = tf.train.AdamOptimizer(learning_rate=.001).minimize(loss)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=.005).minimize(loss)
 
 # Start session - Tensorflow housekeeping
 session = tf.InteractiveSession()
@@ -90,7 +90,7 @@ for episode in range(EPISODE):
         # TODO: Calculate the target q-value.
         # hint1: Bellman
         # hint2: consider if the episode has terminated
-        # nextstate_q_action = np.argmax(nextstate_q_values)
+
         target = reward + GAMMA*np.max(nextstate_q_values) 
 
         # Do one training step
